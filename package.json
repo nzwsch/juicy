@@ -30,6 +30,7 @@
     "typeface-montserrat": "0.0.75"
   },
   "devDependencies": {
+    "luxon": "^1.27.0",
     "prettier": "2.2.1"
   },
   "homepage": "https://github.com/gatsbyjs/gatsby-starter-blog#readme",
@@ -49,6 +50,7 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+    "newpost": "node scripts/newpost.js"
   }
 }
