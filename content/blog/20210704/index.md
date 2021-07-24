@@ -1,7 +1,7 @@
 ---
 title: "hello"
 date: "2021-07-04T21:54:54.700+09:00"
-description: "ブログをまた新しく始めてみました。"
+description: "ブログをまた新しく始めてみました"
 ---
 
 ![hello](./hello.jpg)

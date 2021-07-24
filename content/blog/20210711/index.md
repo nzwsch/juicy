@@ -1,7 +1,7 @@
 ---
 title: "pie chartの作り方"
 date: "2021-07-11T07:28:59.074+09:00"
-description: "今回はpie chart(いわゆる円グラフ)の作り方を覚えたので、その復習をしてみようというのが趣旨です。"
+description: "JavaScriptでpie chartの描きかたについて"
 ---
 
 今回はpie chart(円グラフ)の作り方を覚えたので、その復習をしてみようというのが趣旨です。
