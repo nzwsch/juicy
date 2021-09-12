@@ -44,6 +44,14 @@ end
 このファイルによるとFFmpegの`ffprobe`を使うようです。
 [Alpine Linux][alpine]だと`apk add ffmpeg`でコマンドが使えるようになりました。
 
+続いて今回定義したモデルの`Video`クラスです。
+
+```ruby
+class Video < ApplicationRecord
+  has_one_attached :content
+end
+```
+
 では実際に[Sample Videos][sample-videos]のファイルを借りて試してみましょう。
 
     [ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: 2d53f9b3-dc4b-4883-963d-0910e1cf606f) to Async(default) with arguments: #<GlobalID:0x00007f0b3e034080 @uri=#<URI::GID gid://myapp/ActiveStorage::Blob/1>>
@@ -60,22 +68,18 @@ video.content.analyze
 ```
 
 続いてこの動画のサムネイルを表示してみます。
-まずは今回定義したモデルの`Video`です。
 
-```ruby
-class Video < ApplicationRecord
-  has_one_attached :content
-end
+```erb
+<%= image_tag video.content.preview(resize_to_limit: [348, 225]) %>
 ```
 
 Viewに関してはこの通りです。
 初回表示に時間がかかってしまうのですが、イメージとしては`ffmpeg`を実行して`image_processing`というgemでリサイズをします。
 今回はGraphicsMagickを使用しましたが、サポートしているライブラリであればどれでもよいと思います。
 
-```erb
-<%= image_tag video.content.preview(resize_to_limit: [348, 225]) %>
-```
+![SampleVideo_1280x720_1mb](./SampleVideo_1280x720_1mb.jpg)
 
+これで生成された画像がご覧の通り。
 こちらもサムネイルの生成は時間がかかるので、Seedであらかじめファイルのりサイズを行いたいときは`video.content.preview.processed`を使うとよさそうです。
 
 ```ruby
@@ -83,9 +87,7 @@ video = Video.last
 video.content.preview(resize_to_limit: [348, 225]).processed
 ```
 
-![SampleVideo_1280x720_1mb](./SampleVideo_1280x720_1mb.jpg)
-
-これで生成された画像がご覧の通り。
+`previewable?`というメソッドもあったのですが、動画やPDFのときに`true`を返すだけなので確実にファイルを作っておきたいときはモデル作成時に上記のコードを用意しておくとよいと思います。
 ただしこのサムネイルはもともと問題なく表示できているのですが、白黒の画面からフェードインだったりする場合はうまくサムネイルが表示できないことがあるかもしれません。
 
 https://github.com/rails/rails/blob/6-1-stable/activestorage/lib/active_storage/previewer/video_previewer.rb
