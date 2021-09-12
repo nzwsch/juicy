@@ -52,7 +52,12 @@ end
 ログを見ると`ActiveStorage::AnalyzeJob`というジョブが実行されていました。
 縦横1280x720px(16:9)で長さが5.28秒として取得できていました。
 
-注意としてはSeedで作成したファイルは`ActiveStorage::AnalyzeJob`が実行されなかったので、個別にJobを実行してあげる必要がありそうです。
+注意としてはSeedで作成したファイルは`ActiveStorage::AnalyzeJob`が実行されなかったので、個別に`analyze`を実行してあげる必要がありそうです。
+
+```ruby
+video = Video.last
+video.content.analyze
+```
 
 続いてこの動画のサムネイルを表示してみます。
 まずは今回定義したモデルの`Video`です。
@@ -69,6 +74,13 @@ Viewに関してはこの通りです。
 
 ```erb
 <%= image_tag video.content.preview(resize_to_limit: [348, 225]) %>
+```
+
+こちらもサムネイルの生成は時間がかかるので、Seedであらかじめファイルのりサイズを行いたいときは`video.content.preview.processed`を使うとよさそうです。
+
+```ruby
+video = Video.last
+video.content.preview(resize_to_limit: [348, 225]).processed
 ```
 
 ![SampleVideo_1280x720_1mb](./SampleVideo_1280x720_1mb.jpg)
